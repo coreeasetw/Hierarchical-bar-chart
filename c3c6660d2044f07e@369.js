@@ -221,7 +221,36 @@ d3.hierarchy(data)
 )}
 
 function _data(FileAttachment){return(
-FileAttachment("flare-2.json").json()
+FileAttachment("2019app.csv").csv({typed: true}).then(rows => {
+  const root = {name: "2019app", children: []};
+
+  for (const row of rows) {
+    const value = Number(row.amount);
+    if (!Number.isFinite(value)) continue;
+
+    const path = [row.cat, row.depcat, row.depname, row.name];
+    let node = root;
+
+    for (let i = 0; i < path.length; i++) {
+      const label = path[i] ?? "未命名";
+      let child = node.children.find(d => d.name === label);
+
+      if (!child) {
+        child = {name: label};
+        node.children.push(child);
+      }
+
+      if (i === path.length - 1) {
+        child.value = (child.value || 0) + value;
+      } else {
+        if (!child.children) child.children = [];
+        node = child;
+      }
+    }
+  }
+
+  return root;
+})
 )}
 
 function _x(d3,marginLeft,width,marginRight){return(
@@ -290,7 +319,7 @@ export default function define(runtime, observer) {
   const main = runtime.module();
   function toString() { return this.url; }
   const fileAttachments = new Map([
-    ["flare-2.json", {url: new URL("./files/e65374209781891f37dea1e7a6e1c5e020a3009b8aedf113b4c80942018887a1176ad4945cf14444603ff91d3da371b3b0d72419fa8d2ee0f6e815732475d5de.json", import.meta.url), mimeType: "application/json", toString}]
+    ["2019app.csv", {url: new URL("./files/2019app.csv", import.meta.url), mimeType: "text/csv", toString}]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
