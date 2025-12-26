@@ -1,0 +1,14 @@
+{
+  "name": "c3c6660d2044f07e",
+  "main": "c3c6660d2044f07e@369.js",
+  "version": "369.0.0",
+  "homepage": "https://observablehq.com/d/c3c6660d2044f07e",
+  "author": {
+    "name": "Coreeasetw",
+    "url": "https://observablehq.com/@coreeasetw"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
